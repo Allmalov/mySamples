@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <style>
+
+        #col1 {
+            width: 300px; /* Ширина первой колонки */
+            height: 350px;
+            background: #f0f0f0; /* Цвет фона первой колонки */
+        }
+        #col2 {
+            width: 300px; /* Ширина второй колонки */
+            height: 350px;
+            background: #f0f0f0; /* Цвет фона второй колонки */
+            font-family: "Verdana";
+        }
+
+        #down1{
+            background: black;
+            height: 20px;
+            background: #798BFC;
+            text-align: center;
+            font-family: "Verdana";
+        }
+
+        #down2{
+            background: #798BFC;
+            height: 20px;
+            text-align: center;
+            word-spacing: 10px;
+
+
+        }
+        #tab{
+            margin: auto;
+            border:4px ridge #798BFC;
+
+
+        }
+        #img{
+            border:2px solid #798BFC;
+            width:200px;
+            height: 200px;
+            margin-left: 50px;
+        }
+        #serd1, #serd2, #serd3{
+            width: 20px;
+            height: 20px;
+
+
+        }
+        #h2{
+            font-family: "Verdana";
+            text-align: center;
+            margin-right: 18px;
+        }
+        #myword{
+
+        }
+        #button{
+            margin-top: 50px;
+            margin-left: 40px;
+        }
+        #result{
+            margin-top: 20px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        $(function(){
+			//объект со значениями
+			var pics= {
+				'аватар':"pics/avatar.jpg",
+				'гарри поттер':"pics/garry.jpg",
+				'хатико':"pics/hatik.jpg",
+				'оно':"pics/it.png",
+				'леон':'pics/leon.jpg',
+				'матрица':'pics/matrix.jpg',
+				'один дома':'pics/odin.jpg',
+				'шрек':'pics/shrek.jpg',
+                'титаник':'pics/titan.jpg'
+			};
+
+
+			init();
+
+            //очки
+            var score = 0 ;
+
+            //жизни
+            var lifes = 3;
+
+
+            function init(){
+
+				//ключи - в значения
+				var picsObj =(Object.keys(pics));
+		//        console.log(picsObj);
+
+				//функция рандома
+				var x = picsObj[Math.floor(Math.random()*picsObj.length)];
+				console.log(x);
+
+				//Дабавляем src путь к картинкам у img
+				$('#img').attr('src', pics[x]);
+
+
+				//удаление рандомного элемента из массива
+				var indexOf = picsObj.indexOf(x);
+				picsObj.splice(indexOf,1);
+				delete pics[x];
+
+
+				//слушатель цикла
+				$('#button').one('click', check);
+				
+				//функция проверки
+				function check(a) {
+                    if (lifes > 0) {
+
+                    var writ_word;//введенное слово
+                    writ_word = document.getElementById('myword').value;
+
+                    if (x === writ_word) {//если введенное слово равно рандомному
+                        console.log('right!!!');
+
+                        $('#myword').val('');
+
+                        score++;
+                        $("#count1").text(score);
+                        console.log(score);
+
+
+                        if (picsObj.length === 0) {
+                            $('#col2').text('Победа!!!');
+
+                        } else {
+
+                            init();
+
+                        }
+                    } else if(lifes===3){
+                        $('#button').one('click', check);
+                        console.log('fail!!!');
+                        $('#serd3').hide(1000);
+                        lifes--;
+                        $('#myword').val('');
+                        console.log(lifes);
+
+                    }else if(lifes===2){
+                        $('#button').one('click', check);
+                        console.log('fail!!!');
+                        $('#serd2').hide(1000);
+                        lifes--;
+                        $('#myword').val('');
+                        console.log(lifes);
+
+                    }else if(lifes===1){
+                        $('#button').one('click', check);
+                        console.log('fail!!!');
+                        $('#serd1').hide(1000);
+                        lifes--;
+                        $('#myword').val('');
+                        console.log(lifes);
+                        $('#col2').text('Увы( попробуйте еще раз');
+
+                    }
+                }
+
+				}
+			}
+
+		});
+    </script>
+</head>
+<body>
+<table id="tab"  cellpadding="5" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <img src="" id="img"/>
+        </td>
+        <td id="col2">
+            <h2 id="h2">Какой фильм на картинке?</h2>
+            <input id="button" type="button" height="30px" width="30px">
+            <input  type="text" id="myword" placeholder="Введите ответ" >
+        <h2 type="text" id="result"></h2>
+
+        </td>
+    </tr>
+    <tr>
+        <td id="down1">
+            <h3 id="count" type="text">Угадано: <span id="count1"></span></h3>
+        </td>
+        <td id="down2">
+            <img id="serd1" src='pics/heart.png'/>
+            <img id="serd2" src='pics/heart.png'/>
+            <img id="serd3" src='pics/heart.png'/>
+
+        </td>
+
+
+    </tr>
+</table>
+
+
+</body>
+</html>
